@@ -1,0 +1,13 @@
+{
+    "clientId": "4ufoedd4so0jq9j8fd7k3oroua",
+    "userPoolUri": "cueback-dev.auth.ap-south-1.amazoncognito.com",
+    "userPool": "ap-south-1_R48hvi3z7",
+    "region": "ap-south-1",
+    "callbackUri": "http://localhost:8000/auth/login",
+    "signoutUri": "http://localhost:8000",
+    "tokenScopes": [
+        "openid",
+        "email",
+        "profile"
+    ]
+}

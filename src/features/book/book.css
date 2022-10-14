@@ -1,0 +1,19 @@
+.test_scroll::-webkit-scrollbar {
+  width: 8px;
+  box-sizing: border-box;
+}
+.test_scroll::-webkit-scrollbar-track {max-height: 50%; height: 50%;}
+.test_scroll::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-left: 1px solid #e2e4e9;
+}
+
+.test_scroll::-webkit-scrollbar-thumb {
+  background: #c1c3ca;
+  border-radius: 10px;
+  height: 3px !important;
+}
