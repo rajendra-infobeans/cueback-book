@@ -233,7 +233,7 @@ const BookEditor = () => {
     if (value.label === 'Alphabetical Order') {
       dispatch(sortBookMemoriesByAlphabetical());
     }
-    else if (value.label === 'Chronological Order'){
+    else if (value.label === 'Chronological Order') {
       dispatch(sortBookMemoriesByChronological());
     }
   }
@@ -323,45 +323,45 @@ const BookEditor = () => {
               id="overflowMain"
             >
               <CardList
-              dataLength={bookMemories?.length}
-              next={fetchMoreData}
-              hasMore={hasMoreData}
-              scrollThreshold={0.2}
-              scrollableTarget="overflowMain"
-              loader={
-                <SpinnerCircular
-                  size={48}
-                  thickness={200}
-                  speed={100}
-                  color={`rgba(${theme.colors.neutral200}, 1)`}
-                  secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
-                  style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
-                />
-              }
+                dataLength={bookMemories?.length}
+                next={fetchMoreData}
+                hasMore={hasMoreData}
+                scrollThreshold={0.2}
+                scrollableTarget="overflowMain"
+                loader={
+                  <SpinnerCircular
+                    size={48}
+                    thickness={200}
+                    speed={100}
+                    color={`rgba(${theme.colors.neutral200}, 1)`}
+                    secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
+                    style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
+                  />
+                }
               >
-              {bookMemories &&
-                bookMemories?.map((data, ind) => {
-                  return (
-                    <CardRow key={Math.random() + ind}>
-                      <Checkbox
-                        name={data.id}
-                        checked={findItem(data.nid) === -1 ? false : true}
-                        selectItem={() => selectItem(data.nid)}
-                      />
-                      <CheckContent>
-                        <CardHeader>
-                          <ContentTitle>{data.title}</ContentTitle>
-                        </CardHeader>
-                        <CardHeader>
-                          <ContentDetails>{DateTime.fromSeconds(parseInt(data.memory_date)).toLocaleString(
-    DateTime.DATE_MED
-  )}</ContentDetails>
-                        </CardHeader>
-                      </CheckContent>
-                    </CardRow>
-                  );
-                })}
-                </CardList>
+                {bookMemories &&
+                  bookMemories?.map((data, ind) => {
+                    return (
+                      <CardRow key={Math.random() + ind}>
+                        <Checkbox
+                          name={data.id}
+                          checked={findItem(data.nid) === -1 ? false : true}
+                          selectItem={() => selectItem(data.nid)}
+                        />
+                        <CheckContent>
+                          <CardHeader>
+                            <ContentTitle>{data.title}</ContentTitle>
+                          </CardHeader>
+                          <CardHeader>
+                            <ContentDetails>{DateTime.fromSeconds(parseInt(data.memory_date)).toLocaleString(
+                              DateTime.DATE_MED
+                            )}</ContentDetails>
+                          </CardHeader>
+                        </CheckContent>
+                      </CardRow>
+                    );
+                  })}
+              </CardList>
             </CardBody>
             <CardFooter>
               <CardButton type="primary" onClick={submitSelection}>

@@ -37,6 +37,7 @@ const MainSection = styled.div`
 
 const GlobalStyle = createGlobalStyle`
   body {
+    margin: 0px;
     background-color: rgb(${theme.colors.white});
     overflow: hidden;
     box-sizing: border-box;
