@@ -25,7 +25,6 @@ export const HeadSlice = createSlice({
   name: 'head',
   reducers: {
     setPageTitle: (state, action) => {
-      console.log('titlr');
       let title = action.payload;
       if (title) {
         state.title = title;

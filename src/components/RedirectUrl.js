@@ -9,7 +9,7 @@ const RedirectUrl = ({ url }) => {
             window.location.assign(url);
     }, [url]);
   
-    return <h5>Redirecting...</h5>;
+    return null;
 
   };
 

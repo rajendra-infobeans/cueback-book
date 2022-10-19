@@ -91,3 +91,9 @@ export const LoginValidate = (values) => {
   }
   return errors;
 };
+
+export const getDomain = () => {
+  const hostnameArray = window.location.hostname.split('.');
+  const numberOfSubdomains = hostnameArray.length - 2;
+  return hostnameArray.length === 2 ? window.location.hostname : hostnameArray.slice(numberOfSubdomains).join('.');
+}

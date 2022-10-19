@@ -93,3 +93,27 @@ export const recentResponse = (obj) => {
   };
   return newResponse;
 };
+
+export const bookResponse = (obj) => {
+  const dataArr = obj?.Details;
+  if (dataArr) {
+    dataArr.data.map((item) => {
+      item.bookId = item?.id;
+      item.author = {
+        name: { first: '', last: '' },
+        profilePictures: { upload: '' },
+      };
+      item.author.name.first = item?.field_first_name_value;
+      item.author.name.last = item?.field_last_name_value;
+      item.date = { updated: '' };
+      item.date.updated = item?.updated;
+    });
+  }
+  const newResponse = {
+    message: obj.ResponseMessage,
+    code: obj.ResponseCode,
+    totalItems: dataArr?.count,
+    data: dataArr?.data,
+  };
+  return newResponse;
+};

@@ -1,9 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   RecentPublishedApi,
+  AddBookMemories,
+  GetBookList,
 } from '../../app-api/api';
 import { GetMemories } from '../../app-api/newApi';
-import { recentObject, recentResponse } from '../../util/Format';
+import { recentObject, recentResponse, bookResponse } from '../../util/Format';
+import { getDomain } from '../../util/functions';
+import Cookies from 'js-cookie';
 
 
 export const fetchBookMemories = createAsyncThunk(
@@ -23,14 +27,38 @@ export const fetchCurrentUserBookMemories = createAsyncThunk(
       const response = process.env.GATSBY_NEW_API === 'TRUE' ? await GetMemories(data) : await RecentPublishedApi(data);
       const result = process.env.GATSBY_NEW_API === 'TRUE' ? response : recentResponse(response);
       return result;
-    })
+    }
+);
+
+export const addBookMemories = createAsyncThunk(
+  'memory/AddBookMemories',
+  async (obj) => {
+    const data = obj;
+    const response =  await AddBookMemories(data);
+    const result = process.env.GATSBY_NEW_API === 'TRUE' ? response : bookResponse(response);
+    return result;
+  }
+);
+
+export const getBookList = createAsyncThunk(
+  'memory/GetBookList',
+  async(obj) => {
+    const response = await GetBookList(obj);
+    const result = process.env.GATSBY_NEW_API === 'TRUE' ? response : bookResponse(response);
+    return result;
+  }
+);
+
 
 const initialState = {
   bookMemories:[],
   bookMemoriesStatus:'',
   page: 0,
   hasMoreData: true,
+  hasBooks: null,
+  totalMemories: 0
 };
+const domain = getDomain();
 export const BookMemorySlice = createSlice({
   name: 'bookMemory',
   initialState,
@@ -56,9 +84,14 @@ export const BookMemorySlice = createSlice({
           ...state?.bookMemories,
           ...(action?.payload?.data ? action?.payload?.data : []),
         ];
+        state.totalMemories = action?.payload?.page?.totalItems;
+        if (action?.payload?.page?.totalItems === 0) {
+          state.hasMoreData = false;
+        }
+        
       } else {
-        localStorage.clear();
-        window.location.reload();
+        Cookies.remove('uid', { domain: domain });
+        Cookies.remove('idToken', { domain: domain });
       }
     },
     [fetchBookMemories.rejected]: (state, action) => {
@@ -78,8 +111,8 @@ export const BookMemorySlice = createSlice({
             state.hasMoreData = false
         }
     } else {
-        localStorage.clear();
-        window.location.reload();
+        Cookies.remove('uid', { domain: domain });
+        Cookies.remove('idToken', { domain: domain });
     }
     },
     [fetchCurrentUserBookMemories.rejected]: (state, action) => {
@@ -88,6 +121,35 @@ export const BookMemorySlice = createSlice({
     localStorage.clear();
     window.location.reload();
     state.error = action.payload;
+    },
+    [addBookMemories.pending]: (state) => {
+      state.bookMemoriesStatus = 'loading';
+    },
+    [addBookMemories.fulfilled]: (state, action) => {
+      state.bookMemoriesStatus = 'idle';
+      if (action?.payload && action?.payload?.code && action?.payload?.code === 200) {
+        state.hasBooks = true;
+      }
+    },
+    [addBookMemories.rejected]: (state) => {
+      state.bookMemoriesStatus = 'failed';
+    },
+    [getBookList.pending]: (state) => {
+      state.hasBooks = false;
+    },
+    [getBookList.fulfilled]: (state, action) => {
+      if (action?.payload && action?.payload?.code && action?.payload?.code === 200) {
+        state.hasBooks = action?.payload?.totalItems > 0 ? true : false;
+      }
+      else {
+        Cookies.remove('uid', { domain: domain });
+        Cookies.remove('idToken', { domain: domain });
+      }
+    },
+    [getBookList.rejected]: (state) => {
+      state.hasBooks = false;
+      Cookies.remove('uid', { domain: domain });
+      Cookies.remove('idToken', { domain: domain });
     },
   
   },
@@ -105,5 +167,6 @@ export const selectBookMemories = (state) => {
 export const selectBookMemoriesStatus = (state) => state?.bookMemory?.bookMemoriesStatus;
 export const selectPage = (state) => state?.bookMemory?.page;
 export const selectHasMoreData = (state) => state?.bookMemory?.hasMoreData;
-
+export const selectHasBooks = (state) => state?.bookMemory?.hasBooks;
+export const selectTotalMemories = (state) => state?.bookMemory.totalMemories;
 export default BookMemorySlice.reducer;

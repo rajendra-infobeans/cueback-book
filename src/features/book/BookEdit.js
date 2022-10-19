@@ -6,6 +6,8 @@ import booktitle from '../../images/booktitle.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchBookMemories,
+  addBookMemories,
+  getBookList,
   selectBookMemories,
   selectBookMemoriesStatus,
   sortBookMemoriesByAlphabetical,
@@ -13,7 +15,9 @@ import {
   selectPage,
   fetchCurrentUserBookMemories,
   pageCounter,
-  selectHasMoreData
+  selectHasMoreData,
+  selectHasBooks,
+  selectTotalMemories
 } from '../../app/reducers/BookMemorySlice';
 import { DateTime } from 'luxon';
 import {
@@ -30,6 +34,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { SpinnerCircular } from 'spinners-react';
 import './book.css';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const BookContainer = styled.div`
   display: flex;
@@ -210,6 +215,10 @@ const BookEditor = () => {
   const bookMemories = useSelector(selectBookMemories);
   const status = useSelector(selectBookMemoriesStatus);
   const hasMoreData = useSelector(selectHasMoreData);
+  const hasBooks = useSelector(selectHasBooks);
+  const totalMemories = useSelector(selectTotalMemories);
+  const navigate = useNavigate();
+  const uid = Cookies.get('uid');
   const obj = {
     params: {
       userId: Cookies.get('uid'),
@@ -217,11 +226,40 @@ const BookEditor = () => {
       pageSize: 10
     }
   };
+  window.onpopstate = () => {
+    console.log("url changed");
+    navigate('/app/bookcreation');
+  }
+  const editorObj = {
+    width: '0vw',
+    transform: `translate(-100%, 0px)`,
+  };
+  const thankuObj = {
+    width: '100vw',
+  };
 
   useEffect(() => {
-    dispatch(fetchBookMemories(obj));
-    dispatch(pageCounter());
+    dispatch(getBookList({details:{uid: uid}}));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (hasBooks === false) {
+      dispatch(fetchBookMemories(obj));
+      dispatch(pageCounter());
+    }
+    else if (hasBooks === true) {
+      Object.keys(editorObj).map((item) => {
+        editorRef.current.style[item] = editorObj[item];
+      });
+  
+      Object.keys(thankuObj).map((item) => {
+        thankuRef.current.style[item] = thankuObj[item];
+      });
+    }
+    
+  }, [hasBooks]);
+
+
 
   const fetchMoreData = () => {
     dispatch(fetchCurrentUserBookMemories(obj));
@@ -239,27 +277,22 @@ const BookEditor = () => {
   }
 
   const submitSelection = () => {
-    const editorObj = {
-      width: '0vw',
-      transform: `translate(-100%, 0px)`,
-    };
-    const thankuObj = {
-      width: '100vw',
-    };
-    if (selectedItem?.length <= 10) {
+    if (selectedItem?.length < 10) {
       alert('Select at least 10 memories');
       return;
     }
+    const obj = {
+      details: {
+        uid: Cookies.get('uid'),
+        memories: selectedItem
+      }
+    };
+    dispatch(addBookMemories(obj));
     console.log(selectedItem);
-    Object.keys(editorObj).map((item) => {
-      editorRef.current.style[item] = editorObj[item];
-    });
 
-    Object.keys(thankuObj).map((item) => {
-      thankuRef.current.style[item] = thankuObj[item];
-    });
   };
 
+  const closeWindow = () => navigate('/mystories-matter');
   const addItem = (index) => {
     toggleCheckbox(index);
     setSelectedItem((previous) => [...previous, index]);
@@ -311,7 +344,7 @@ const BookEditor = () => {
             <Selection>
               <SelectMemory>
                 <NoOfMemory>
-                  {`${isSelected}/${bookMemories.length}`} memories selected
+                  {`${isSelected}/${totalMemories}`} memories selected
                 </NoOfMemory>
               </SelectMemory>
               <Dropdown dropDownCallback={handleDropDown} data={dropDownData} />
@@ -328,6 +361,7 @@ const BookEditor = () => {
               hasMore={hasMoreData}
               scrollThreshold={0.2}
               scrollableTarget="overflowMain"
+              endMessage= {totalMemories === 0 ? 'No memories found' : ''}
               loader={
                 <SpinnerCircular
                   size={48}
@@ -364,7 +398,11 @@ const BookEditor = () => {
                 </CardList>
             </CardBody>
             <CardFooter>
-              <CardButton type="primary" onClick={submitSelection}>
+              <CardButton 
+              type="primary"
+              onClick={submitSelection}
+              disabled={selectedItem?.length < 10}
+              >
                 Submit selection
               </CardButton>
             </CardFooter>
@@ -392,7 +430,7 @@ const BookEditor = () => {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <CardButton type="secondary">Close window</CardButton>
+                <CardButton type="secondary" onClick={closeWindow}>Close window</CardButton>
               </CardFooter>
             </ThankYouBookCard>
           </ThankYouMainContainer>

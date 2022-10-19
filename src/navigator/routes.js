@@ -3,7 +3,7 @@ import BookCreation from "../features/book/BookCreation";
 import BookEditor from "../features/book/BookEdit";
 import RedirectUrl from "../components/RedirectUrl";
 
-import { Navigate, Outlet} from 'react-router-dom';
+import { Navigate} from 'react-router-dom';
 
 const routes = (isLoggedIn) => [
   {
@@ -23,12 +23,16 @@ const routes = (isLoggedIn) => [
     element:  isLoggedIn ? <Navigate  to="/app/bookedit" /> : <RedirectUrl url="http://login.local-mystories.com" />
   },
   {
+    path: '/mystories-matter',
+    element: <RedirectUrl url="https://mystoriesmatter.com" />
+  },
+  {
     path: '/',
     element:  <BookCreation />
   },
   {
     path: '*',
-    element: <BookCreation />
+    element: isLoggedIn ? <Navigate  to="/app/bookcreation" /> : <Navigate  to="/app/bookedit" />,
   }
 
 ];
