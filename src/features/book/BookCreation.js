@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import booktitle from '../../images/booktitle.svg';
 import bookImg from '../../images/bookimage.svg';
 import theme from '../../styles/colors';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Body,
   Bold,
@@ -147,9 +147,8 @@ const BookCreation = () => {
   const navigate = useNavigate();
   const bookRef = useRef(null);
   const MainContainerRef = useRef(null);
- 
-  const openLogin = () => {
 
+  const openLogin = () => {
     navigate('/login-redirect');
   };
 
@@ -159,20 +158,19 @@ const BookCreation = () => {
         <ImageSection>
           <Image src={booktitle} />
         </ImageSection>
-
         <MainContainer ref={MainContainerRef}>
           <Container>
             <BookCard ref={bookRef}>
               <CardHeader>
                 <CardTitle>Create a physical keepsake</CardTitle>
               </CardHeader>
-              <CardHeader margin="8px 0px 0px 0px">
+              <CardHeader>
                 <CardDescription>
                   Stitch your memories from My Stories Matter together into a
                   book,to give as a gift or to keep.
                 </CardDescription>
               </CardHeader>
-              <CardBody margin="24px 0px">
+              <CardBody margin="14px 0px">
                 {!maxWidth_600 && (
                   <MainSubCard>
                     <SubCard padding="16px">
