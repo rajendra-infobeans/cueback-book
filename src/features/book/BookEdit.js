@@ -38,7 +38,7 @@ const BookContainer = styled.div`
 const BookEditorContainer = styled.div`
   width: 100%;
   transition: 0.7s;
-  overflow: hidden;
+  overflow: scroll;
 `;
 const ThankYouContainer = styled.div`
   height: 100vh;
@@ -137,6 +137,7 @@ color: ${`rgb(${theme.colors.neutral200})`};
 const CardHeader = styled.div`
   margin: ${(props) => props.margin};
   @media screen and (max-width:599px){
+    text-align: start;
     padding: 0px 24px;
   }
 `;

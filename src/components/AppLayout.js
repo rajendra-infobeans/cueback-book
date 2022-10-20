@@ -43,6 +43,9 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     height: 100vh;
     height: -webkit-fill-available;
+    @media screen and (max-width:599px){
+      overflow: scroll;
+    }
   }
 
   html{
