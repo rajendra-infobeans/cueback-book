@@ -4,8 +4,12 @@ import { FiChevronDown, FiCheck } from 'react-icons/fi';
 import theme from '../styles/colors';
 
 const StyledDropdown = styled.div`
-  .dropdown {
-    width: 356px;
+@media only screen and (max-width: 599px) {
+      padding: 0px 24px;
+    }
+    .dropdown {
+    height: 56px;
+    width: 366px;
     border-radius: 8px;
     /* box-shadow: 0px 0px 4px rgba(11, 12, 15, 0.07),
       0px 4px 8px rgba(11, 12, 15, 0.07), 0px 8px 16px rgba(11, 12, 15, 0.07); */
@@ -16,7 +20,6 @@ const StyledDropdown = styled.div`
       width: auto;
     }
   }
-
   .dropdown-header {
     padding: 16px 24px;
     cursor: pointer;
@@ -149,12 +152,11 @@ export const Dropdown = (props) => {
         </Div>
 
         <Div className={`dropdown-body ${isOpen && 'open'} `}>
-          {items.map((item,ind) => (
+          {items.map((item, ind) => (
             <Div
-            key={ind + Math.random()}
-              className={`dropdown-item ${
-                item.id === parseInt(selectedItem) && 'selected'
-              }`}
+              key={ind + Math.random()}
+              className={`dropdown-item ${item.id === parseInt(selectedItem) && 'selected'
+                }`}
               onClick={(e) => {
                 handleItemClick(e.target.id);
                 toggleDropdown();
@@ -163,9 +165,8 @@ export const Dropdown = (props) => {
             >
               {item.label}
               <Span
-                className={`dropdown-item-dot ${
-                  item.id === parseInt(selectedItem) && 'selected'
-                }`}
+                className={`dropdown-item-dot ${item.id === parseInt(selectedItem) && 'selected'
+                  }`}
               >
                 <FiCheck />
               </Span>

@@ -36,8 +36,7 @@ const BookContainer = styled.div`
 `;
 
 const BookEditorContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
   transition: 0.7s;
   overflow: hidden;
 `;
@@ -51,31 +50,22 @@ const ImageSection = styled.div``;
 const Image = styled.img``;
 
 const MainContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 54%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
+  margin: auto;
   width: 752px;
-  margin-top: 20px;
-  @media only screen and (max-width: 999px) {
-    width: 552px;
-    margin-top: 32px;
-  }
-  @media only screen and (max-width: 599px) {
-    padding: 24px;
+  @media only screen and (max-width: 600px) {
     width: 100vw;
     box-sizing: border-box;
-    margin-top: -24px;
+} 
+  @media only screen and (min-width:320px) and (max-width: 599px) {
+    box-sizing: border-box;
   }
-  @media only screen and (max-width: 473px) {
-    margin-top: -5px;
+  @media only screen and (max-width:470px){
   }
-  @media only screen and (max-width: 451px) {
-    margin-top: 6px;
+  @media screen and (min-width:471px) and (max-width:601px) {
   }
-  @media only screen and (max-width: 373px) {
-    margin-top: 6px;
+  @media only screen and (min-width: 600px) and (max-width: 1000px) {
+    overflow: hidden;
+    width: 552px;
   }
 `;
 
@@ -112,35 +102,81 @@ const ThankYouBookCard = styled.div`
     box-sizing: border-box;
   }
 `;
+const BookEditorNote = styled(Caption1)`
+margin-top:8px;
+width: 100%;
+height: 72px;
+display: flex;
+align-items: center;
+letter-spacing: -0.05em;
+color: ${`rgb(${theme.colors.neutral200})`};
+@media only screen and (max-width:599px){
+margin-top:15px;
+padding:0px 24px;
+display:flex;
+align-items:flex-start;
+width: 90%;
+height: auto;
+}
+@media only screen and (min-width: 600px) and (max-width:1000px){
+margin-top: 8px;
+width: 100%;
+height: 90px;
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 125%;
+display: flex;
+align-items: center;
+letter-spacing: -0.05em;
+color: ${`rgb(${theme.colors.neutral200})`};
+}
+`
 
 const CardHeader = styled.div`
   margin: ${(props) => props.margin};
+  @media screen and (max-width:599px){
+    padding: 0px 24px;
+  }
 `;
 
 const CardTitle = styled(Title1)`
   color: ${theme.buttonPrimaryBg};
   font-size: 30px;
   line-height: 125%;
+  
 `;
 
 const CardDescription = styled(Headline)`
   color: ${`rgb(${theme.colors.neutral400})`};
 `;
+const TyCardDescription = styled.div`
+width: auto;
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 19px;
+line-height: 23px;
+display: flex;
+align-items: center;
+margin-top: 20px;
+color: ${`rgb(${theme.colors.neutral400})`};
+`
 const HighlightCardDes = styled(Bold)``;
 
 const CardBody = styled.div`
-  margin: ${(props) => props.margin};
   padding: ${(props) => props.padding};
   overflow: auto;
-  height: 476.37px;
+  width: auto;
+  height: ${(props) => props.length < 5 ? 'auto' : '500px'};
   background: #f3f5f7;
-
   border: 1px solid #e2e4e9;
   border-radius: 16px;
   border-top-right-radius: 9px;
   border-bottom-right-radius: 9px;
   @media only screen and (max-width: 599px) {
-    height: 343.37px;
+    height:${(props) => props.length < 5 ? 'auto' : '525px'};
   }
 `;
 const CardList = styled(InfiniteScroll)`
@@ -167,7 +203,6 @@ const CheckContent = styled.div`
     0px 2px 2px rgba(7, 53, 98, 0.05);
   border-radius: 8px;
 `;
-
 const ContentTitle = styled(Subhead)`
   font-size: 17px;
   line-height: 110%;
@@ -197,8 +232,44 @@ const NoOfMemory = styled(Footnote)`
   color: ${`rgb(${theme.colors.neutral200})`};
 `;
 
-const CardFooter = styled.div``;
-const CardButton = styled(Button)``;
+const CardFooter = styled.div` 
+@media screen and (min-width:600px){
+padding-top: 32px;
+}
+`
+const TyCardFooter = styled.div` 
+`;
+const TyCardButton = styled(Button)`
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 12px 16px;
+width: 148px;
+height: 44px;
+background: #F3F5F7;
+border: 1px solid #E2E4E9;
+border-radius: 1000px;
+@media screen and (max-width:599px){
+  margin-left: 24px;
+}
+`
+const CardButton = styled(Button)`
+@media only screen and (min-width: 320px) and (max-width:599px){
+margin: 24px;
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 90%;
+height: 44px;
+background: ${`rgb(${theme.colors.neutral600})`};
+border: 1px solid ${`rgb(${theme.colors.neutral100})`};
+border-radius: 1000px;
+}
+`;
 
 const BookEditor = () => {
   const editorRef = useRef(null);
@@ -317,7 +388,6 @@ const BookEditor = () => {
               <Dropdown dropDownCallback={handleDropDown} data={dropDownData} />
             </Selection>
             <CardBody
-              margin="24px 0px"
               padding="24px 24px 0px 24px"
               className="test_scroll"
               id="overflowMain"
@@ -363,6 +433,9 @@ const BookEditor = () => {
                   })}
               </CardList>
             </CardBody>
+            <BookEditorNote>
+              Note: Submitting your memory selection will share these memories with our designer solely to estimate the length of your book and provide your book layout. We recommend reviewing your selection before submitting to ensure you are comfortable with what will be shared. Additionally, only JPG and PNG images will be added to your book (no PDFs, MP3s, other media types).
+            </BookEditorNote>
             <CardFooter>
               <CardButton type="primary" onClick={submitSelection}>
                 Submit selection
@@ -387,13 +460,15 @@ const BookEditor = () => {
                 <CardDescription>
                   Our designer will reach out via email to you shortly with a
                   sample of what your book will look like. From there, you can
-                  choose to purchase it and we will ship it to you. We look
-                  forward to creating a book with you!
+                  choose to purchase it and we will ship it to you.
                 </CardDescription>
+                <TyCardDescription>
+                  We look forward to creating a book with you!
+                </TyCardDescription>
               </CardHeader>
-              <CardFooter>
-                <CardButton type="secondary">Close window</CardButton>
-              </CardFooter>
+              <TyCardFooter>
+                <TyCardButton type="secondary">Close window</TyCardButton>
+              </TyCardFooter>
             </ThankYouBookCard>
           </ThankYouMainContainer>
         </TyContainer>

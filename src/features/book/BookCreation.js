@@ -149,7 +149,6 @@ const BookCreation = () => {
   const MainContainerRef = useRef(null);
 
   const openLogin = () => {
-
     navigate('/login-redirect');
   };
 
