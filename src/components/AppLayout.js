@@ -30,7 +30,6 @@ const AppLayoutContainer = styled.div`
 
 const MainSection = styled.div`
   position: relative;
-
   min-height: 0;
   align-self: stretch;
 `;
@@ -39,7 +38,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0px;
     background-color: rgb(${theme.colors.white});
-    overflow: hidden;
     box-sizing: border-box;
     height: 100vh;
     height: -webkit-fill-available;

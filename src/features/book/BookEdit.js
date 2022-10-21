@@ -38,7 +38,7 @@ const BookContainer = styled.div`
 const BookEditorContainer = styled.div`
   width: 100%;
   transition: 0.7s;
-  overflow: hidden;
+
 `;
 const ThankYouContainer = styled.div`
   height: 100vh;
@@ -70,17 +70,11 @@ const MainContainer = styled.div`
 `;
 
 const TyContainer = styled.div`
-  position: relative;
-  top: 22.5%;
 `;
 
 const ThankYouMainContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 22.5%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
-  height: 300px;
+  margin:auto;
+  width: 752px;
   @media only screen and (max-width: 599px) {
     top: 25%;
   }
@@ -314,6 +308,7 @@ const BookEditor = () => {
     const editorObj = {
       width: '0vw',
       transform: `translate(-100%, 0px)`,
+      display: 'none'
     };
     const thankuObj = {
       width: '100vw',
