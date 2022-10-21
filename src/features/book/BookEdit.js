@@ -38,7 +38,7 @@ const BookContainer = styled.div`
 const BookEditorContainer = styled.div`
   width: 100%;
   transition: 0.7s;
-  overflow: scroll;
+  overflow: hidden;
 `;
 const ThankYouContainer = styled.div`
   height: 100vh;
