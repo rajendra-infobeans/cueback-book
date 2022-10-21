@@ -20,7 +20,7 @@ const routes = (isLoggedIn) => [
   },
   {
     path: '/login-redirect',
-    element:  isLoggedIn ? <Navigate  to="/app/bookedit" /> : <RedirectUrl url="http://login.local-mystories.com" />
+    element:  isLoggedIn ? <Navigate  to="/app/bookedit" /> : <RedirectUrl url={process.env.REACT_APP_lOGIN_URL } />
   },
   {
     path: '/mystories-matter',

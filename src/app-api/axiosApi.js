@@ -2,10 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 // import isBrowser from '../util/gatsby';
 const isBrowser = typeof window !== 'undefined';
-const baseURL =
-  process.env.REACT_APP_VERCEL_ENV === 'production'
-    ? 'https://mystoriesmatter.com/api'
-    : 'https://public.cuebackqa.com/api';
+const baseURL = 'http://local-public.cueback.com/api';
+  // process.env.REACT_APP_VERCEL_ENV === 'production'
+  //   ? 'https://mystoriesmatter.com/api'
+  //   : 'https://public.cuebackqa.com/api';
 const axiosInstance = axios.create({
   baseURL,
   headers: {

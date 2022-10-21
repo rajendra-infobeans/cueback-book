@@ -12,7 +12,7 @@ const AppLayoutContainer = styled.div`
   justify-content: stretch;
   justify-items: stretch;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   height: -webkit-fill-available;
   box-sizing: border-box;
 

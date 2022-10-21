@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { getDomain } from '../util/functions';
 const RedirectUrl = ({ url }) => {
-    const navigate = useNavigate();
-    Cookies.set('location-redirect', window.location.href, { domain: 'local-mystories.com' });
+    const domain = getDomain();
+    Cookies.set('location-redirect', window.location.href, { domain: domain });
   
     useEffect(() => {
             window.location.assign(url);
