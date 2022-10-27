@@ -59,10 +59,6 @@ const MainContainer = styled.div`
   @media only screen and (min-width:320px) and (max-width: 599px) {
     box-sizing: border-box;
   }
-  @media only screen and (max-width:470px){
-  }
-  @media screen and (min-width:471px) and (max-width:601px) {
-  }
   @media only screen and (min-width: 600px) and (max-width: 1000px) {
     overflow: hidden;
     width: 552px;
@@ -97,7 +93,6 @@ const ThankYouBookCard = styled.div`
   }
 `;
 const BookEditorNote = styled(Caption1)`
-margin-top:8px;
 width: 100%;
 height: 72px;
 display: flex;
@@ -105,7 +100,7 @@ align-items: center;
 letter-spacing: -0.05em;
 color: ${`rgb(${theme.colors.neutral200})`};
 @media only screen and (max-width:599px){
-margin-top:15px;
+margin-top:8px;
 padding:0px 24px;
 display:flex;
 align-items:flex-start;
@@ -113,7 +108,6 @@ width: 90%;
 height: auto;
 }
 @media only screen and (min-width: 600px) and (max-width:1000px){
-margin-top: 8px;
 width: 100%;
 height: 90px;
 font-family: 'Inter';
