@@ -43,7 +43,6 @@ const BookContainer = styled.div`
 const BookEditorContainer = styled.div`
   width: 100%;
   transition: 0.7s;
-  overflow: hidden;
 `;
 const ThankYouContainer = styled.div`
   height: 100vh;
@@ -64,28 +63,17 @@ const MainContainer = styled.div`
   @media only screen and (min-width:320px) and (max-width: 599px) {
     box-sizing: border-box;
   }
-  @media only screen and (max-width:470px){
-  }
-  @media screen and (min-width:471px) and (max-width:601px) {
-  }
   @media only screen and (min-width: 600px) and (max-width: 1000px) {
     overflow: hidden;
     width: 552px;
   }
 `;
-
 const TyContainer = styled.div`
-  position: relative;
-  top: 22.5%;
 `;
 
 const ThankYouMainContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 22.5%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
-  height: 300px;
+  margin:auto;
+  width: 752px;
   @media only screen and (max-width: 599px) {
     top: 25%;
   }
@@ -108,7 +96,7 @@ const ThankYouBookCard = styled.div`
   }
 `;
 const BookEditorNote = styled(Caption1)`
-margin-top:8px;
+padding-top: 8px;
 width: 100%;
 height: 72px;
 display: flex;
@@ -116,7 +104,7 @@ align-items: center;
 letter-spacing: -0.05em;
 color: ${`rgb(${theme.colors.neutral200})`};
 @media only screen and (max-width:599px){
-margin-top:15px;
+margin-top:8px;
 padding:0px 24px;
 display:flex;
 align-items:flex-start;
@@ -124,7 +112,6 @@ width: 90%;
 height: auto;
 }
 @media only screen and (min-width: 600px) and (max-width:1000px){
-margin-top: 8px;
 width: 100%;
 height: 90px;
 font-family: 'Inter';
@@ -142,10 +129,10 @@ color: ${`rgb(${theme.colors.neutral200})`};
 const CardHeader = styled.div`
   margin: ${(props) => props.margin};
   @media screen and (max-width:599px){
+    text-align: start;
     padding: 0px 24px;
   }
 `;
-
 const CardTitle = styled(Title1)`
   color: ${theme.buttonPrimaryBg};
   font-size: 30px;
@@ -310,7 +297,7 @@ const BookEditor = () => {
   };
 
   useEffect(() => {
-    dispatch(getBookList({details:{uid: uid}}));
+    dispatch(getBookList({ details: { uid: uid } }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -322,12 +309,12 @@ const BookEditor = () => {
       Object.keys(editorObj).map((item) => {
         editorRef.current.style[item] = editorObj[item];
       });
-  
+
       Object.keys(thankuObj).map((item) => {
         thankuRef.current.style[item] = thankuObj[item];
       });
     }
-    
+
   }, [hasBooks]);
 
 
@@ -426,22 +413,22 @@ const BookEditor = () => {
               id="overflowMain"
             >
               <CardList
-              dataLength={bookMemories?.length}
-              next={fetchMoreData}
-              hasMore={hasMoreData}
-              scrollThreshold={0.2}
-              scrollableTarget="overflowMain"
-              endMessage= {totalMemories === 0 ? 'No memories found' : ''}
-              loader={
-                <SpinnerCircular
-                  size={48}
-                  thickness={200}
-                  speed={100}
-                  color={`rgba(${theme.colors.neutral200}, 1)`}
-                  secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
-                  style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
-                />
-              }
+                dataLength={bookMemories?.length}
+                next={fetchMoreData}
+                hasMore={hasMoreData}
+                scrollThreshold={0.2}
+                scrollableTarget="overflowMain"
+                endMessage={totalMemories === 0 ? 'No memories found' : ''}
+                loader={
+                  <SpinnerCircular
+                    size={48}
+                    thickness={200}
+                    speed={100}
+                    color={`rgba(${theme.colors.neutral200}, 1)`}
+                    secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
+                    style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
+                  />
+                }
               >
                 {bookMemories &&
                   bookMemories?.map((data, ind) => {
@@ -471,10 +458,10 @@ const BookEditor = () => {
               Note: Submitting your memory selection will share these memories with our designer solely to estimate the length of your book and provide your book layout. We recommend reviewing your selection before submitting to ensure you are comfortable with what will be shared. Additionally, only JPG and PNG images will be added to your book (no PDFs, MP3s, other media types).
             </BookEditorNote>
             <CardFooter>
-              <CardButton 
-              type="primary"
-              onClick={submitSelection}
-              disabled={selectedItem?.length < 10}
+              <CardButton
+                type="primary"
+                onClick={submitSelection}
+                disabled={selectedItem?.length < 10}
               >
                 Submit selection
               </CardButton>
@@ -504,9 +491,9 @@ const BookEditor = () => {
                   We look forward to creating a book with you!
                 </TyCardDescription>
               </CardHeader>
-              <CardFooter>
-                <CardButton type="secondary" onClick={closeWindow}>Close window</CardButton>
-              </CardFooter>
+              <TyCardFooter>
+                <TyCardButton type="secondary" onClick={closeWindow}>Close window</TyCardButton>
+              </TyCardFooter>
             </ThankYouBookCard>
           </ThankYouMainContainer>
         </TyContainer>

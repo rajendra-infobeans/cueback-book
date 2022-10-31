@@ -30,20 +30,20 @@ const AppLayoutContainer = styled.div`
 
 const MainSection = styled.div`
   position: relative;
-
   min-height: 0;
   align-self: stretch;
 `;
 
 const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0px;
     background-color: rgb(${theme.colors.white});
     box-sizing: border-box;
     height: 100vh;
     height: -webkit-fill-available;
+    @media screen and (max-width:599px){
+      overflow: scroll;
+    }
   }
-
   html{
     height: 100vh;
     height: -webkit-fill-available;
@@ -77,15 +77,15 @@ const AppLayout = ({ children }) => {
   }, [dispatch]);
 
   if (isBrowser) {
-      return (
-        <>
-            <AppLayoutContainer>
-              <Head />
-              <GlobalStyle />
-              <MainSection>{children}</MainSection>
-            </AppLayoutContainer>
-        </>
-      );
+    return (
+      <>
+        <AppLayoutContainer>
+          <Head />
+          <GlobalStyle />
+          <MainSection>{children}</MainSection>
+        </AppLayoutContainer>
+      </>
+    );
   } else {
     return <></>;
   }
