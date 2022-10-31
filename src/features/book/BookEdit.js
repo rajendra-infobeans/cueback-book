@@ -6,8 +6,6 @@ import booktitle from '../../images/booktitle.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchBookMemories,
-  addBookMemories,
-  getBookList,
   selectBookMemories,
   selectBookMemoriesStatus,
   sortBookMemoriesByAlphabetical,
@@ -15,9 +13,7 @@ import {
   selectPage,
   fetchCurrentUserBookMemories,
   pageCounter,
-  selectHasMoreData,
-  selectHasBooks,
-  selectTotalMemories
+  selectHasMoreData
 } from '../../app/reducers/BookMemorySlice';
 import { DateTime } from 'luxon';
 import {
@@ -34,7 +30,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { SpinnerCircular } from 'spinners-react';
 import './book.css';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 
 const BookContainer = styled.div`
   display: flex;
@@ -43,7 +38,7 @@ const BookContainer = styled.div`
 const BookEditorContainer = styled.div`
   width: 100%;
   transition: 0.7s;
-  overflow: hidden;
+
 `;
 const ThankYouContainer = styled.div`
   height: 100vh;
@@ -64,10 +59,6 @@ const MainContainer = styled.div`
   @media only screen and (min-width:320px) and (max-width: 599px) {
     box-sizing: border-box;
   }
-  @media only screen and (max-width:470px){
-  }
-  @media screen and (min-width:471px) and (max-width:601px) {
-  }
   @media only screen and (min-width: 600px) and (max-width: 1000px) {
     overflow: hidden;
     width: 552px;
@@ -75,17 +66,11 @@ const MainContainer = styled.div`
 `;
 
 const TyContainer = styled.div`
-  position: relative;
-  top: 22.5%;
 `;
 
 const ThankYouMainContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 22.5%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
-  height: 300px;
+  margin:auto;
+  width: 752px;
   @media only screen and (max-width: 599px) {
     top: 25%;
   }
@@ -108,7 +93,6 @@ const ThankYouBookCard = styled.div`
   }
 `;
 const BookEditorNote = styled(Caption1)`
-margin-top:8px;
 width: 100%;
 height: 72px;
 display: flex;
@@ -116,7 +100,7 @@ align-items: center;
 letter-spacing: -0.05em;
 color: ${`rgb(${theme.colors.neutral200})`};
 @media only screen and (max-width:599px){
-margin-top:15px;
+margin-top:8px;
 padding:0px 24px;
 display:flex;
 align-items:flex-start;
@@ -124,7 +108,6 @@ width: 90%;
 height: auto;
 }
 @media only screen and (min-width: 600px) and (max-width:1000px){
-margin-top: 8px;
 width: 100%;
 height: 90px;
 font-family: 'Inter';
@@ -142,6 +125,7 @@ color: ${`rgb(${theme.colors.neutral200})`};
 const CardHeader = styled.div`
   margin: ${(props) => props.margin};
   @media screen and (max-width:599px){
+    text-align: start;
     padding: 0px 24px;
   }
 `;
@@ -286,10 +270,6 @@ const BookEditor = () => {
   const bookMemories = useSelector(selectBookMemories);
   const status = useSelector(selectBookMemoriesStatus);
   const hasMoreData = useSelector(selectHasMoreData);
-  const hasBooks = useSelector(selectHasBooks);
-  const totalMemories = useSelector(selectTotalMemories);
-  const navigate = useNavigate();
-  const uid = Cookies.get('uid');
   const obj = {
     params: {
       userId: Cookies.get('uid'),
@@ -297,40 +277,11 @@ const BookEditor = () => {
       pageSize: 10
     }
   };
-  window.onpopstate = () => {
-    console.log("url changed");
-    navigate('/app/bookcreation');
-  }
-  const editorObj = {
-    width: '0vw',
-    transform: `translate(-100%, 0px)`,
-  };
-  const thankuObj = {
-    width: '100vw',
-  };
 
   useEffect(() => {
-    dispatch(getBookList({details:{uid: uid}}));
+    dispatch(fetchBookMemories(obj));
+    dispatch(pageCounter());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (hasBooks === false) {
-      dispatch(fetchBookMemories(obj));
-      dispatch(pageCounter());
-    }
-    else if (hasBooks === true) {
-      Object.keys(editorObj).map((item) => {
-        editorRef.current.style[item] = editorObj[item];
-      });
-  
-      Object.keys(thankuObj).map((item) => {
-        thankuRef.current.style[item] = thankuObj[item];
-      });
-    }
-    
-  }, [hasBooks]);
-
-
 
   const fetchMoreData = () => {
     dispatch(fetchCurrentUserBookMemories(obj));
@@ -348,22 +299,28 @@ const BookEditor = () => {
   }
 
   const submitSelection = () => {
-    if (selectedItem?.length < 10) {
+    const editorObj = {
+      width: '0vw',
+      transform: `translate(-100%, 0px)`,
+      display: 'none'
+    };
+    const thankuObj = {
+      width: '100vw',
+    };
+    if (selectedItem?.length <= 10) {
       alert('Select at least 10 memories');
       return;
     }
-    const obj = {
-      details: {
-        uid: Cookies.get('uid'),
-        memories: selectedItem
-      }
-    };
-    dispatch(addBookMemories(obj));
     console.log(selectedItem);
+    Object.keys(editorObj).map((item) => {
+      editorRef.current.style[item] = editorObj[item];
+    });
 
+    Object.keys(thankuObj).map((item) => {
+      thankuRef.current.style[item] = thankuObj[item];
+    });
   };
 
-  const closeWindow = () => navigate('/mystories-matter');
   const addItem = (index) => {
     toggleCheckbox(index);
     setSelectedItem((previous) => [...previous, index]);
@@ -415,7 +372,7 @@ const BookEditor = () => {
             <Selection>
               <SelectMemory>
                 <NoOfMemory>
-                  {`${isSelected}/${totalMemories}`} memories selected
+                  {`${isSelected}/${bookMemories.length}`} memories selected
                 </NoOfMemory>
               </SelectMemory>
               <Dropdown dropDownCallback={handleDropDown} data={dropDownData} />
@@ -426,22 +383,21 @@ const BookEditor = () => {
               id="overflowMain"
             >
               <CardList
-              dataLength={bookMemories?.length}
-              next={fetchMoreData}
-              hasMore={hasMoreData}
-              scrollThreshold={0.2}
-              scrollableTarget="overflowMain"
-              endMessage= {totalMemories === 0 ? 'No memories found' : ''}
-              loader={
-                <SpinnerCircular
-                  size={48}
-                  thickness={200}
-                  speed={100}
-                  color={`rgba(${theme.colors.neutral200}, 1)`}
-                  secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
-                  style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
-                />
-              }
+                dataLength={bookMemories?.length}
+                next={fetchMoreData}
+                hasMore={hasMoreData}
+                scrollThreshold={0.2}
+                scrollableTarget="overflowMain"
+                loader={
+                  <SpinnerCircular
+                    size={48}
+                    thickness={200}
+                    speed={100}
+                    color={`rgba(${theme.colors.neutral200}, 1)`}
+                    secondaryColor={`rgba(${theme.colors.neutral100}, 1)`}
+                    style={{ justifySelf: 'center', position: 'relative', left: '45%' }}
+                  />
+                }
               >
                 {bookMemories &&
                   bookMemories?.map((data, ind) => {
@@ -471,11 +427,7 @@ const BookEditor = () => {
               Note: Submitting your memory selection will share these memories with our designer solely to estimate the length of your book and provide your book layout. We recommend reviewing your selection before submitting to ensure you are comfortable with what will be shared. Additionally, only JPG and PNG images will be added to your book (no PDFs, MP3s, other media types).
             </BookEditorNote>
             <CardFooter>
-              <CardButton 
-              type="primary"
-              onClick={submitSelection}
-              disabled={selectedItem?.length < 10}
-              >
+              <CardButton type="primary" onClick={submitSelection}>
                 Submit selection
               </CardButton>
             </CardFooter>
@@ -504,9 +456,9 @@ const BookEditor = () => {
                   We look forward to creating a book with you!
                 </TyCardDescription>
               </CardHeader>
-              <CardFooter>
-                <CardButton type="secondary" onClick={closeWindow}>Close window</CardButton>
-              </CardFooter>
+              <TyCardFooter>
+                <TyCardButton type="secondary">Close window</TyCardButton>
+              </TyCardFooter>
             </ThankYouBookCard>
           </ThankYouMainContainer>
         </TyContainer>
