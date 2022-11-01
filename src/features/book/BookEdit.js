@@ -72,13 +72,10 @@ const TyContainer = styled.div`
 `;
 
 const ThankYouMainContainer = styled.div`
-  margin:auto;
+margin: auto;
   width: 752px;
   @media only screen and (max-width: 599px) {
     top: 25%;
-  }
-  @media only screen and (max-width: 999px) {
-    padding: 0px 24px 24px 24px;
   }
 `;
 
@@ -169,6 +166,7 @@ const CardBody = styled.div`
   border-bottom-right-radius: 9px;
   @media only screen and (max-width: 599px) {
     height:${(props) => props.length < 5 ? 'auto' : '525px'};
+    width:90vw;
   }
 `;
 const CardList = styled(InfiniteScroll)`
@@ -269,6 +267,7 @@ const BookEditor = () => {
   const dispatch = useDispatch();
   const [isSelected, setIsSelected] = useState(0);
   const [selectedItem, setSelectedItem] = useState([]);
+  const [submitButton, setSubmitButton] = useState(false)
   const page = useSelector(selectPage);
   const bookMemories = useSelector(selectBookMemories);
   const status = useSelector(selectBookMemoriesStatus);
@@ -288,11 +287,11 @@ const BookEditor = () => {
     console.log("url changed");
     navigate('/app/bookcreation');
   }
-  const editorObj = {
-    width: '0vw',
-    transform: `translate(-100%, 0px)`,
+  let editorObj = {
+    width: '100vw',
+    transform: submitButton ? `translate(-100vw, 0%)` : `none`,
   };
-  const thankuObj = {
+  let thankuObj = {
     width: '100vw',
   };
 
@@ -308,10 +307,6 @@ const BookEditor = () => {
     else if (hasBooks === true) {
       Object.keys(editorObj).map((item) => {
         editorRef.current.style[item] = editorObj[item];
-      });
-
-      Object.keys(thankuObj).map((item) => {
-        thankuRef.current.style[item] = thankuObj[item];
       });
     }
 
@@ -339,12 +334,28 @@ const BookEditor = () => {
       alert('Select at least 10 memories');
       return;
     }
+    setSubmitButton(true)
     const obj = {
       details: {
         uid: Cookies.get('uid'),
         memories: selectedItem
       }
     };
+    Object.keys(thankuObj).map((item) => {
+      thankuRef.current.style[item] = thankuObj[item];
+    });
+    window.scrollTo(0, 0)
+    editorObj = {
+      width: '0vw',
+      transform: `translate(-100vw, 0%)`,
+    }
+    thankuObj = {
+      width: '100vw',
+      flex: 1
+    };
+    Object.keys(editorObj).map((item) => {
+      editorRef.current.style[item] = editorObj[item];
+    });
     dispatch(addBookMemories(obj));
     console.log(selectedItem);
 
@@ -460,6 +471,7 @@ const BookEditor = () => {
             <CardFooter>
               <CardButton
                 type="primary"
+
                 onClick={submitSelection}
                 disabled={selectedItem?.length < 10}
               >
