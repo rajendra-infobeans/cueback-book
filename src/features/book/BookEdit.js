@@ -305,6 +305,18 @@ const BookEditor = () => {
       dispatch(pageCounter());
     }
     else if (hasBooks === true) {
+      Object.keys(thankuObj).map((item) => {
+        thankuRef.current.style[item] = thankuObj[item];
+      });
+      window.scrollTo(0, 0)
+      editorObj = {
+        width: '0vw',
+        transform: `translate(-100vw, 0%)`,
+      }
+      thankuObj = {
+        width: '100vw',
+        flex: 1
+      };
       Object.keys(editorObj).map((item) => {
         editorRef.current.style[item] = editorObj[item];
       });
@@ -341,23 +353,8 @@ const BookEditor = () => {
         memories: selectedItem
       }
     };
-    Object.keys(thankuObj).map((item) => {
-      thankuRef.current.style[item] = thankuObj[item];
-    });
-    window.scrollTo(0, 0)
-    editorObj = {
-      width: '0vw',
-      transform: `translate(-100vw, 0%)`,
-    }
-    thankuObj = {
-      width: '100vw',
-      flex: 1
-    };
-    Object.keys(editorObj).map((item) => {
-      editorRef.current.style[item] = editorObj[item];
-    });
+
     dispatch(addBookMemories(obj));
-    console.log(selectedItem);
 
   };
 
